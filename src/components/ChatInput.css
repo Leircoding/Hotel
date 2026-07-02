@@ -1,0 +1,20 @@
+.chat-input-form {
+  display: flex;
+  padding: var(--spacing-md);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.chat-input {
+  flex: 1;
+  border: none;
+  background: none;
+  outline: none;
+  font-size: 1rem;
+  color: var(--color-dark);
+  padding: var(--spacing-sm);
+  placeholder: var(--color-text-light);
+}
+
+.chat-input::placeholder {
+  color: var(--color-text-light);
+}

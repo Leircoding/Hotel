@@ -1,0 +1,42 @@
+.category-nav {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-md) 0;
+  border-right: 1px solid var(--color-border);
+  width: 80px;
+  min-width: 80px;
+}
+
+.category-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-xs);
+  background: none;
+  border: none;
+  padding: var(--spacing-md) var(--spacing-sm);
+  color: var(--color-text-light);
+  cursor: pointer;
+  font-size: 0.625rem;
+  text-align: center;
+  border-radius: var(--radius-md);
+  transition: all 0.2s;
+}
+
+.category-btn svg {
+  width: 24px;
+  height: 24px;
+  stroke-width: 1.5;
+}
+
+.category-btn:hover {
+  color: var(--color-text);
+  background-color: var(--color-bg);
+}
+
+.category-btn.active {
+  color: var(--color-accent);
+  background-color: rgba(217, 110, 69, 0.1);
+}
