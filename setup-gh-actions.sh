@@ -1,0 +1,49 @@
+#!/bin/bash
+
+# Create .github/workflows directory if it doesn't exist
+mkdir -p .github/workflows
+
+# Create the deploy.yml workflow file
+cat > .github/workflows/deploy.yml << 'EOF'
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build project
+        run: npm run build
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v2
+        with:
+          path: './dist'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v2
+EOF
+
+echo "GitHub Actions workflow created at .github/workflows/deploy.yml"
