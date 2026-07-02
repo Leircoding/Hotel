@@ -1,0 +1,150 @@
+.chat-page {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+.chat-container {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  padding: var(--spacing-lg);
+}
+
+.chat-empty-state {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: var(--spacing-lg);
+  color: var(--color-text-light);
+}
+
+.chat-empty-state svg {
+  width: 64px;
+  height: 64px;
+  color: var(--color-accent);
+  animation: wave 2s ease-in-out infinite;
+}
+
+@keyframes wave {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  10%,
+  30% {
+    transform: rotate(14deg);
+  }
+  20% {
+    transform: rotate(-8deg);
+  }
+  40%,
+  60% {
+    transform: rotate(0deg);
+  }
+}
+
+.chat-empty-state h2 {
+  font-size: 1.5rem;
+  color: var(--color-dark);
+  margin: 0;
+}
+
+.chat-empty-state p {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.form-link {
+  margin-top: var(--spacing-md);
+  background: none;
+  border: none;
+  color: var(--color-accent);
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-decoration: underline;
+  padding: 0;
+}
+
+.form-link:hover {
+  opacity: 0.8;
+}
+
+.chat-messages {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.chat-message {
+  display: flex;
+  margin-bottom: var(--spacing-md);
+}
+
+.chat-message.user {
+  justify-content: flex-end;
+}
+
+.chat-message.assistant {
+  justify-content: flex-start;
+}
+
+.message-bubble {
+  max-width: 70%;
+  padding: var(--spacing-md) var(--spacing-lg);
+  border-radius: var(--radius-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.chat-message.user .message-bubble {
+  background-color: var(--color-dark);
+  color: white;
+}
+
+.chat-message.assistant .message-bubble {
+  background-color: var(--color-bg);
+  color: var(--color-dark);
+  border: 1px solid var(--color-border);
+}
+
+.message-text {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.message-time {
+  font-size: 0.7rem;
+  opacity: 0.7;
+}
+
+.chat-input-wrapper {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--color-border);
+  background-color: var(--color-white);
+}
+
+.clear-chat-btn {
+  padding: var(--spacing-md);
+  background: none;
+  border: none;
+  color: var(--color-error);
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.clear-chat-btn:hover {
+  opacity: 0.8;
+}
