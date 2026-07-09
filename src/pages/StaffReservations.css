@@ -1,0 +1,151 @@
+.staff-page {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow-y: auto;
+  padding: var(--spacing-lg);
+  gap: var(--spacing-lg);
+}
+
+.staff-welcome {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.staff-welcome h1 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-dark);
+  margin: 0;
+}
+
+.staff-welcome p {
+  margin: 0;
+  font-size: 0.95rem;
+  color: var(--color-text-light);
+}
+
+.staff-banner {
+  margin: 0;
+}
+
+.staff-success-banner {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  margin: 0;
+  padding: var(--spacing-sm) var(--spacing-md);
+  background-color: rgba(76, 175, 80, 0.1);
+  color: var(--color-success);
+  border-radius: var(--radius-md);
+  font-size: 0.9rem;
+}
+
+.staff-card {
+  background-color: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.staff-card .maintenance-form {
+  padding: var(--spacing-lg);
+}
+
+.staff-date-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-md);
+}
+
+.reservations-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.reservation-row {
+  background-color: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--spacing-md);
+  flex-wrap: wrap;
+}
+
+.reservation-info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.reservation-name {
+  font-weight: 600;
+  color: var(--color-dark);
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.reservation-detail {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--color-text-light);
+}
+
+.reservation-badge {
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 0.15rem 0.5rem;
+  border-radius: var(--radius-sm);
+  background-color: var(--color-bg);
+  color: var(--color-text-light);
+  text-transform: uppercase;
+}
+
+.reservation-badge.active {
+  background-color: rgba(76, 175, 80, 0.15);
+  color: var(--color-success);
+}
+
+.reservation-row-actions {
+  display: flex;
+  gap: var(--spacing-sm);
+  flex-shrink: 0;
+}
+
+.row-action-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  padding: var(--spacing-sm) var(--spacing-md);
+  background-color: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-dark);
+  cursor: pointer;
+}
+
+.row-action-btn:hover {
+  background-color: var(--color-bg);
+}
+
+.row-action-btn.confirm {
+  background-color: var(--color-dark);
+  color: white;
+  border-color: var(--color-dark);
+}
+
+.reservation-edit {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  width: 100%;
+}
