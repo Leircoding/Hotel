@@ -1,25 +1,17 @@
 import { useState } from 'react';
 import { AlertCircle } from 'lucide-react';
+import { supabase } from '../lib/supabaseClient';
 import '../components/MaintenanceForm.css';
 import './CheckIn.css';
 
-// Mock check-in call standing in for the real reservations API.
-// Trigger the error states below during frontend testing:
-// email containing "checkedout" -> already checked out
-// email containing "noreservation" -> no reservation found
-function checkInGuest({ email }) {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      const normalized = email.toLowerCase();
-      if (normalized.includes('checkedout')) {
-        reject(new Error('This reservation has already been checked out.'));
-      } else if (normalized.includes('noreservation')) {
-        reject(new Error('No reservation found for this email address.'));
-      } else {
-        resolve({ email });
-      }
-    }, 900);
+async function checkInGuest({ name, email }) {
+  const { data, error } = await supabase.rpc('check_in_guest', {
+    p_name: name,
+    p_email: email,
   });
+
+  if (error) throw new Error(error.message);
+  return data;
 }
 
 function CheckIn({ onCheckIn }) {
