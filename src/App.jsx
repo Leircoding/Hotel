@@ -6,7 +6,7 @@ import CheckIn from './pages/CheckIn';
 import Home from './pages/Home';
 import Chat from './pages/Chat';
 import Maintenance from './pages/Maintenance';
-import StaffReservations from './pages/StaffReservations';
+import Staff from './pages/Staff';
 import './App.css';
 
 function App() {
@@ -45,7 +45,7 @@ function App() {
         <AppHeader simple={!isCheckedIn || isStaffRoute} />
         <main className="app-main">
           <Routes>
-            <Route path="/staff" element={<StaffReservations />} />
+            <Route path="/staff" element={<Staff />} />
             <Route
               path="/"
               element={isCheckedIn ? <Home guestName={guestName} stay={stay} /> : <CheckIn onCheckIn={handleCheckIn} />}

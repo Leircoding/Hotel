@@ -4,13 +4,12 @@ import { supabase } from '../lib/supabaseClient';
 import '../components/MaintenanceForm.css';
 import './StaffReservations.css';
 
-const STAFF_PASSCODE = import.meta.env.VITE_STAFF_PASSCODE;
-
-async function createReservation({ name, email, room, checkOutDate }) {
+async function createReservation({ name, email, room, checkInDate, checkOutDate }) {
   const { data, error } = await supabase.rpc('create_reservation', {
     p_name: name,
     p_email: email,
     p_room: room,
+    p_check_in_date: checkInDate,
     p_check_out_date: checkOutDate,
   });
 
@@ -18,30 +17,18 @@ async function createReservation({ name, email, room, checkOutDate }) {
   return data;
 }
 
-function StaffReservations() {
-  const [authed, setAuthed] = useState(sessionStorage.getItem('staffAuthed') === 'true');
-  const [passcode, setPasscode] = useState('');
-  const [passcodeError, setPasscodeError] = useState('');
+const todayISO = () => new Date().toISOString().slice(0, 10);
 
+function StaffReservations() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [room, setRoom] = useState('');
+  const [checkInDate, setCheckInDate] = useState(todayISO());
   const [checkOutDate, setCheckOutDate] = useState('');
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const [serverError, setServerError] = useState('');
   const [success, setSuccess] = useState('');
-
-  const handlePasscodeSubmit = (e) => {
-    e.preventDefault();
-    if (passcode === STAFF_PASSCODE) {
-      sessionStorage.setItem('staffAuthed', 'true');
-      setAuthed(true);
-      setPasscodeError('');
-    } else {
-      setPasscodeError('Incorrect passcode');
-    }
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -53,7 +40,10 @@ function StaffReservations() {
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
       newErrors.email = 'Enter a valid email address';
     if (!room.trim()) newErrors.room = 'Enter a room number/type';
+    if (!checkInDate) newErrors.checkInDate = 'Select a check-in date';
     if (!checkOutDate) newErrors.checkOutDate = 'Select a checkout date';
+    else if (checkInDate && checkOutDate <= checkInDate)
+      newErrors.checkOutDate = 'Checkout must be after check-in';
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
@@ -66,11 +56,12 @@ function StaffReservations() {
     setLoading(true);
 
     try {
-      await createReservation({ name, email, room, checkOutDate });
+      await createReservation({ name, email, room, checkInDate, checkOutDate });
       setSuccess(`Reservation created for ${name}.`);
       setName('');
       setEmail('');
       setRoom('');
+      setCheckInDate(todayISO());
       setCheckOutDate('');
     } catch (err) {
       setServerError(err.message);
@@ -78,49 +69,6 @@ function StaffReservations() {
       setLoading(false);
     }
   };
-
-  if (!authed) {
-    return (
-      <div className="staff-page">
-        <div className="staff-welcome">
-          <h1>Staff Access</h1>
-          <p>Enter the staff passcode to continue</p>
-        </div>
-
-        <div className="staff-card">
-          <form className="maintenance-form" onSubmit={handlePasscodeSubmit}>
-            <div className="form-section">
-              <label className="form-label" htmlFor="staff-passcode">
-                Passcode
-              </label>
-              <input
-                id="staff-passcode"
-                type="password"
-                className="form-textarea"
-                placeholder="Staff passcode"
-                value={passcode}
-                onChange={(e) => {
-                  setPasscode(e.target.value);
-                  setPasscodeError('');
-                }}
-              />
-              {passcodeError && (
-                <p className="error-message">
-                  <AlertCircle size={16} /> {passcodeError}
-                </p>
-              )}
-            </div>
-
-            <div className="form-actions">
-              <button type="submit" className="btn-submit">
-                Continue
-              </button>
-            </div>
-          </form>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="staff-page">
@@ -208,25 +156,48 @@ function StaffReservations() {
             )}
           </div>
 
-          <div className="form-section">
-            <label className="form-label" htmlFor="staff-checkout">
-              Checkout date
-            </label>
-            <input
-              id="staff-checkout"
-              type="date"
-              className="form-textarea"
-              value={checkOutDate}
-              onChange={(e) => {
-                setCheckOutDate(e.target.value);
-                setErrors({ ...errors, checkOutDate: '' });
-              }}
-            />
-            {errors.checkOutDate && (
-              <p className="error-message">
-                <AlertCircle size={16} /> {errors.checkOutDate}
-              </p>
-            )}
+          <div className="staff-date-row">
+            <div className="form-section">
+              <label className="form-label" htmlFor="staff-checkin">
+                Check-in date
+              </label>
+              <input
+                id="staff-checkin"
+                type="date"
+                className="form-textarea"
+                value={checkInDate}
+                onChange={(e) => {
+                  setCheckInDate(e.target.value);
+                  setErrors({ ...errors, checkInDate: '' });
+                }}
+              />
+              {errors.checkInDate && (
+                <p className="error-message">
+                  <AlertCircle size={16} /> {errors.checkInDate}
+                </p>
+              )}
+            </div>
+
+            <div className="form-section">
+              <label className="form-label" htmlFor="staff-checkout">
+                Checkout date
+              </label>
+              <input
+                id="staff-checkout"
+                type="date"
+                className="form-textarea"
+                value={checkOutDate}
+                onChange={(e) => {
+                  setCheckOutDate(e.target.value);
+                  setErrors({ ...errors, checkOutDate: '' });
+                }}
+              />
+              {errors.checkOutDate && (
+                <p className="error-message">
+                  <AlertCircle size={16} /> {errors.checkOutDate}
+                </p>
+              )}
+            </div>
           </div>
 
           <div className="form-actions">
