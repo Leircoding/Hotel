@@ -6,10 +6,12 @@ import CheckIn from './pages/CheckIn';
 import Home from './pages/Home';
 import Chat from './pages/Chat';
 import Maintenance from './pages/Maintenance';
+import StaffReservations from './pages/StaffReservations';
 import './App.css';
 
 function App() {
   const location = useLocation();
+  const isStaffRoute = location.pathname === '/staff';
   const [guestName, setGuestName] = useState('Gabriel');
   const [isCheckedIn, setIsCheckedIn] = useState(false);
   const [stay, setStay] = useState(null);
@@ -40,19 +42,25 @@ function App() {
   return (
     <div className="app-container">
       <div className="app-wrapper">
-        <AppHeader simple={!isCheckedIn} />
+        <AppHeader simple={!isCheckedIn || isStaffRoute} />
         <main className="app-main">
-          {isCheckedIn ? (
-            <Routes>
-              <Route path="/" element={<Home guestName={guestName} stay={stay} />} />
-              <Route path="/chat" element={<Chat guestName={guestName} />} />
-              <Route path="/maintenance" element={<Maintenance />} />
-            </Routes>
-          ) : (
-            <CheckIn onCheckIn={handleCheckIn} />
-          )}
+          <Routes>
+            <Route path="/staff" element={<StaffReservations />} />
+            <Route
+              path="/"
+              element={isCheckedIn ? <Home guestName={guestName} stay={stay} /> : <CheckIn onCheckIn={handleCheckIn} />}
+            />
+            <Route
+              path="/chat"
+              element={isCheckedIn ? <Chat guestName={guestName} /> : <CheckIn onCheckIn={handleCheckIn} />}
+            />
+            <Route
+              path="/maintenance"
+              element={isCheckedIn ? <Maintenance /> : <CheckIn onCheckIn={handleCheckIn} />}
+            />
+          </Routes>
         </main>
-        {isCheckedIn && <BottomNavigation currentPath={location.pathname} />}
+        {isCheckedIn && !isStaffRoute && <BottomNavigation currentPath={location.pathname} />}
       </div>
     </div>
   );
