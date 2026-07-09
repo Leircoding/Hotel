@@ -41,8 +41,8 @@ function CheckIn({ onCheckIn }) {
     setLoading(true);
 
     try {
-      await checkInGuest({ name, email });
-      onCheckIn(name);
+      const reservation = await checkInGuest({ name, email });
+      onCheckIn(name, reservation);
     } catch (err) {
       setServerError(err.message);
       setLoading(false);

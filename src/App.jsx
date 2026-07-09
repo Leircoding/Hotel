@@ -12,17 +12,28 @@ function App() {
   const location = useLocation();
   const [guestName, setGuestName] = useState('Gabriel');
   const [isCheckedIn, setIsCheckedIn] = useState(false);
+  const [stay, setStay] = useState(null);
 
   useEffect(() => {
     const saved = localStorage.getItem('guestName');
     if (saved) setGuestName(saved);
     setIsCheckedIn(localStorage.getItem('checkedIn') === 'true');
+    const savedStay = localStorage.getItem('guestStay');
+    if (savedStay) {
+      try {
+        setStay(JSON.parse(savedStay));
+      } catch {
+        localStorage.removeItem('guestStay');
+      }
+    }
   }, []);
 
-  const handleCheckIn = (name) => {
+  const handleCheckIn = (name, reservation) => {
     localStorage.setItem('guestName', name);
     localStorage.setItem('checkedIn', 'true');
+    localStorage.setItem('guestStay', JSON.stringify(reservation));
     setGuestName(name);
+    setStay(reservation);
     setIsCheckedIn(true);
   };
 
@@ -33,7 +44,7 @@ function App() {
         <main className="app-main">
           {isCheckedIn ? (
             <Routes>
-              <Route path="/" element={<Home guestName={guestName} />} />
+              <Route path="/" element={<Home guestName={guestName} stay={stay} />} />
               <Route path="/chat" element={<Chat guestName={guestName} />} />
               <Route path="/maintenance" element={<Maintenance />} />
             </Routes>
